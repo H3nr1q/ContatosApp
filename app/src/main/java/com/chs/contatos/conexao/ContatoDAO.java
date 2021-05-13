@@ -2,6 +2,7 @@ package com.chs.contatos.conexao;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.ContentObservable;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -21,10 +22,12 @@ public class ContatoDAO {
 
     public long inserir(Contato contato){
         ContentValues values = new ContentValues();
+        //values.put("id",contato.getId());
         values.put("nome", contato.getNome());
         values.put("telefone", contato.getTelefone());
         values.put("email", contato.getEmail());
         values.put("endereco", contato.getEndereco());
+        //return banco.insertWithOnConflict("contato",null,values,SQLiteDatabase.CONFLICT_REPLACE);
         return banco.insert("contato", null, values);
 
     }
@@ -44,5 +47,20 @@ public class ContatoDAO {
         }
         return contatos;
     }
+
+    public void excluir(Contato contato){
+        banco.delete("contato", "id = ?", new String[]{contato.getId().toString()});
+    }
+
+    public void atualizar(Contato contato){
+        ContentValues values = new ContentValues();
+        values.put("nome",contato.getNome());
+        values.put("telefone", contato.getTelefone());
+        values.put("email", contato.getEmail());
+        values.put("endereco", contato.getEndereco());
+        banco.update("contato",values,"id = ?", new String[]{contato.getId().toString()});
+
+    }
+
 
 }

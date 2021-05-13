@@ -3,7 +3,7 @@ package com.chs.contatos.model;
 import java.io.Serializable;
 
 public class Contato implements Serializable {
-    private int id;
+    private Integer id;
     private String nome;
     private String telefone;
     private String endereco;
@@ -12,11 +12,11 @@ public class Contato implements Serializable {
     public Contato(){
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
