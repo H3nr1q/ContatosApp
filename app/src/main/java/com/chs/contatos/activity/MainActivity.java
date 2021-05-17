@@ -28,7 +28,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private ListView listView;
-    private ContatoDAO dao;
+    private ContatoDAO contatoDao;
     private List<Contato> contatos;
     private List<Contato> contatosFiltrados = new ArrayList<>();
 
@@ -39,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         listView = findViewById(R.id.lv_contatos);
-        dao = new ContatoDAO(this);
-        contatos = dao.listaContatos();
+        contatoDao = new ContatoDAO(this);
+        contatos = contatoDao.listaContatos();
         contatosFiltrados.addAll(contatos);
         //Criei um adapter para personalizar exibição
         //ArrayAdapter<Contato> adapter = new ArrayAdapter<Contato>(this, android.R.layout.simple_expandable_list_item_1, contatosFiltrados);
@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         contatosFiltrados.remove(contatoExcluir);
                         contatos.remove(contatoExcluir);
-                        dao.excluir(contatoExcluir);
+                        contatoDao.excluir(contatoExcluir);
                         listView.invalidateViews();
                     }
                 }).create();
@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        contatos = dao.listaContatos();
+        contatos = contatoDao.listaContatos();
         contatosFiltrados.clear();
         contatosFiltrados.addAll(contatos);
         listView.invalidateViews();

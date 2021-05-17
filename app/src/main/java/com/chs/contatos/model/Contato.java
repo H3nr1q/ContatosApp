@@ -9,9 +9,6 @@ public class Contato implements Serializable {
     private String endereco;
     private String email;
 
-    public Contato(){
-    }
-
     public Integer getId() {
         return id;
     }
