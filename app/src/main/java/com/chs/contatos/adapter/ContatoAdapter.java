@@ -47,4 +47,8 @@ public class ContatoAdapter extends BaseAdapter {
         email.setText(contato.getEmail());
         return v;
     }
+
+    public void setContatos(List<Contato> contatos) {
+        this.contatos = contatos;
+    }
 }

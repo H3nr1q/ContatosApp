@@ -4,13 +4,23 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.chs.contatos.app.ContatosApp;
+
 
 public class ContatoHelper extends SQLiteOpenHelper {
     private static final String name = "Contato.db";
     private static final int version = 1;
+    public static ContatoHelper contatoHelper;
 
-    public ContatoHelper(Context context) {
-        super(context, name, null, version);
+    public ContatoHelper() {
+        super(ContatosApp.getInstance(), name, null, version);
+    }
+
+    public synchronized static ContatoHelper getInstance(){
+        if(contatoHelper== null){
+            contatoHelper = new ContatoHelper();
+        }
+        return contatoHelper;
     }
 
     @Override

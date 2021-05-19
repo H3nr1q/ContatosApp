@@ -26,29 +26,32 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainPresenter.MainView{
     private ListView listView;
     private ContatoDAO contatoDao;
     private List<Contato> contatos;
     private List<Contato> contatosFiltrados = new ArrayList<>();
-
+    private MainPresenter mainPresenter;
+    private ContatoAdapter adaptador;
+    FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        listView = findViewById(R.id.lv_contatos);
-        contatoDao = new ContatoDAO(this);
-        contatos = contatoDao.listaContatos();
-        contatosFiltrados.addAll(contatos);
-        //Criei um adapter para personalizar exibição
-        //ArrayAdapter<Contato> adapter = new ArrayAdapter<Contato>(this, android.R.layout.simple_expandable_list_item_1, contatosFiltrados);
-        ContatoAdapter adaptador = new ContatoAdapter(this,contatosFiltrados);
-        listView.setAdapter(adaptador);
-        registerForContextMenu(listView);
+        bindViews();
+        mainPresenter = new MainPresenter(this);
+        mainPresenter.listarContatos();
 
-        FloatingActionButton fab;
+    }
+
+    private void bindViews(){
+
+        listView = findViewById(R.id.lv_contatos);
+        adaptador = new ContatoAdapter(this,contatosFiltrados);
+        listView.setAdapter(adaptador);
+
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,7 +61,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        registerForContextMenu(listView);
+
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
@@ -132,9 +138,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        contatos = contatoDao.listaContatos();
+        //contatos = contatoDao.listaContatos();
         contatosFiltrados.clear();
         contatosFiltrados.addAll(contatos);
         listView.invalidateViews();
+    }
+
+    @Override
+    public void refreshList(List<Contato> contatos) {
+        contatosFiltrados = contatos;
+        adaptador.setContatos(contatos);
     }
 }

@@ -33,7 +33,7 @@ public class CadastroActivity extends AppCompatActivity {
         email = findViewById(R.id.editTextEmail);
         endereco = findViewById(R.id.editeTextEndereco);
         fone = findViewById(R.id.editTextFone);
-        dao = new ContatoDAO(this);
+        //dao = new ContatoDAO(this);
 
         Intent i = getIntent();
         if(i.hasExtra("contato")){
