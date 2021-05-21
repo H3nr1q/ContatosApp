@@ -16,7 +16,6 @@ public class MainPresenter {
     }
 
     public void listarContatos(){
-        //contatoDao = new ContatoDAO(this);
         contatos =  ContatoDAO.getInstance().listaContatos();
         mainView.refreshList(contatos);
 
@@ -24,7 +23,6 @@ public class MainPresenter {
 
     interface MainView{
         void refreshList(List<Contato> contatos);
-
     }
 
 }

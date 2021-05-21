@@ -20,7 +20,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class CadastroActivity extends AppCompatActivity {
     private EditText nome, email, endereco, fone;
-    private ContatoDAO dao;
     private Contato contato = null;
     private Button btnSalvar;
 
@@ -28,13 +27,7 @@ public class CadastroActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro);
-
-        nome = findViewById(R.id.editTextNome);
-        email = findViewById(R.id.editTextEmail);
-        endereco = findViewById(R.id.editeTextEndereco);
-        fone = findViewById(R.id.editTextFone);
-        //dao = new ContatoDAO(this);
-
+        bindViews();
         Intent i = getIntent();
         if(i.hasExtra("contato")){
             contato = (Contato) i.getSerializableExtra("contato");
@@ -43,8 +36,13 @@ public class CadastroActivity extends AppCompatActivity {
             email.setText(contato.getEmail());
             endereco.setText(contato.getEndereco());
         }
+    }
 
-
+    private void bindViews(){
+        nome = findViewById(R.id.editTextNome);
+        email = findViewById(R.id.editTextEmail);
+        endereco = findViewById(R.id.editeTextEndereco);
+        fone = findViewById(R.id.editTextFone);
         btnSalvar = findViewById(R.id.btSalvar);
         btnSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,8 +83,6 @@ public class CadastroActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 
     public void salvar(View view){
@@ -97,7 +93,7 @@ public class CadastroActivity extends AppCompatActivity {
             contato.setTelefone(fone.getText().toString());
             contato.setEmail(email.getText().toString());
             contato.setEndereco(endereco.getText().toString());
-            dao.inserir(contato);
+            ContatoDAO.getInstance().inserir(contato);
             Toast.makeText(this, "Contato " + contato.getNome() + " inserido com sucesso", Toast.LENGTH_LONG).show();
             finish();
             return;
@@ -107,7 +103,7 @@ public class CadastroActivity extends AppCompatActivity {
                 contato.setTelefone(fone.getText().toString());
                 contato.setEmail(email.getText().toString());
                 contato.setEndereco(endereco.getText().toString());
-                dao.atualizar(contato);
+                ContatoDAO.getInstance().atualizar(contato);
                 Toast.makeText(this, "Contato " + contato.getNome() + " atualizado com sucesso", Toast.LENGTH_LONG).show();
             }
 

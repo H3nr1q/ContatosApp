@@ -11,8 +11,37 @@ import com.chs.contatos.model.Contato;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContatoDAO extends DAO{
+public class ContatoDAO extends DAO<Contato>{
     private static ContatoDAO instance;
+
+    public ContatoDAO(){
+
+    }
+
+    @Override
+    public boolean saveOrEdit(Contato object) {
+        return false;
+    }
+
+    @Override
+    public List<Contato> searchByName(String name) {
+        return null;
+    }
+
+    @Override
+    public boolean deletar(Contato object) {
+        return false;
+    }
+
+    @Override
+    public List<Contato> listar() {
+        return null;
+    }
+
+    @Override
+    public Contato searchContactById(int id) {
+        return null;
+    }
 
     public synchronized static ContatoDAO getInstance() {
         if (instance == null){
@@ -21,34 +50,7 @@ public class ContatoDAO extends DAO{
         return instance;
     }
 
-    public ContatoDAO(){
 
-    }
-
-    @Override
-    public boolean saveOrEdit(Object object) {
-        return false;
-    }
-
-    @Override
-    public List searchByName(String name) {
-        return null;
-    }
-
-    @Override
-    public boolean deletar(Object object) {
-        return false;
-    }
-
-    @Override
-    public List listar() {
-        return null;
-    }
-
-    @Override
-    public Object searchContactById(int id) {
-        return null;
-    }
 
     public void inserir(Contato contato){
 
@@ -63,17 +65,25 @@ public class ContatoDAO extends DAO{
 
     public List<Contato> listaContatos(){
         List<Contato> contatos = new ArrayList<>();
-        Cursor cursor = getReadableDB().query("contato",new String[]{"id, nome, telefone, email, endereco"},
-                null, null, null, null, null);
+        String sql = "SELECT * FROM " + "contato" + ";";
+        Cursor cursor = getReadableDB().rawQuery(sql, null);
+//        Cursor cursor = getReadableDB().query("contato",new String[] {"id, nome, telefone, email, endereco"},
+//                null, null, null, null, null);
         while (cursor.moveToNext()){
             Contato c = new Contato();
-            c.setId(cursor.getInt(0));
-            c.setNome(cursor.getString(1));
-            c.setTelefone(cursor.getString(2));
-            c.setEmail(cursor.getString(3));
-            c.setEndereco(cursor.getString(4));
+            c.setId(cursor.getInt(cursor.getColumnIndex("id")));
+            c.setNome(cursor.getString(cursor.getColumnIndex("nome")));
+            c.setTelefone(cursor.getString(cursor.getColumnIndex("telefone")));
+            c.setEmail(cursor.getString(cursor.getColumnIndex("endereco")));
+            c.setEndereco(cursor.getString(cursor.getColumnIndex("email")));
+//            c.setId(cursor.getInt(0));
+//            c.setNome(cursor.getString(1));
+//            c.setTelefone(cursor.getString(2));
+//            c.setEmail(cursor.getString(3));
+//            c.setEndereco(cursor.getString(4));
             contatos.add(c);
         }
+        cursor.close();
         return contatos;
     }
 

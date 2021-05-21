@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -28,8 +29,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MainPresenter.MainView{
     private ListView listView;
-    private ContatoDAO contatoDao;
-    private List<Contato> contatos;
+    private List<Contato> contatos = new ArrayList<>();
     private List<Contato> contatosFiltrados = new ArrayList<>();
     private MainPresenter mainPresenter;
     private ContatoAdapter adaptador;
@@ -39,10 +39,9 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Mai
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         bindViews();
         mainPresenter = new MainPresenter(this);
-        mainPresenter.listarContatos();
+        //mainPresenter.listarContatos();
 
     }
 
@@ -118,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Mai
                     public void onClick(DialogInterface dialogInterface, int i) {
                         contatosFiltrados.remove(contatoExcluir);
                         contatos.remove(contatoExcluir);
-                        contatoDao.excluir(contatoExcluir);
+                        ContatoDAO.getInstance().excluir(contatoExcluir);
                         listView.invalidateViews();
                     }
                 }).create();
@@ -138,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Mai
     @Override
     public void onResume() {
         super.onResume();
-        //contatos = contatoDao.listaContatos();
+        contatos = ContatoDAO.getInstance().listaContatos();
         contatosFiltrados.clear();
         contatosFiltrados.addAll(contatos);
         listView.invalidateViews();
@@ -146,6 +145,7 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Mai
 
     @Override
     public void refreshList(List<Contato> contatos) {
+        this.contatos = contatos;
         contatosFiltrados = contatos;
         adaptador.setContatos(contatos);
     }

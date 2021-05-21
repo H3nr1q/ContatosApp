@@ -3,6 +3,7 @@ package com.chs.contatos.conexao;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.chs.contatos.app.ContatosApp;
 
@@ -17,7 +18,7 @@ public class ContatoHelper extends SQLiteOpenHelper {
     }
 
     public synchronized static ContatoHelper getInstance(){
-        if(contatoHelper== null){
+        if(contatoHelper == null){
             contatoHelper = new ContatoHelper();
         }
         return contatoHelper;
@@ -25,12 +26,20 @@ public class ContatoHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table contato" +
-                "(id integer primary key autoincrement," +
-                "nome varchar(50)," +
-                "telefone varchar(20)," +
-                "email varchar (100)," +
-                "endereco varchar (100))");
+        String sql =("create table if not exists contato " +
+                "(id integer primary key autoincrement, " +
+                " nome text," +
+                " telefone text," +
+                " email text," +
+                " endereco text);");
+
+        try{
+            db.execSQL(sql);
+            Log.i("INFO DB", "Sucesso ao criar a tabela");
+        }catch (Exception e){
+            Log.i("INFO DB", "Erro ao criar a tabela" + e.getMessage());
+
+        }
 
     }
 
