@@ -2,7 +2,7 @@ package com.chs.contatos.model;
 
 import java.io.Serializable;
 
-public class Contato implements Serializable {
+public class Contato implements Serializable { //verificar parcelable
     private Integer id;
     private String nome;
     private String telefone;

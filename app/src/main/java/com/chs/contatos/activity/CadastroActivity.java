@@ -18,10 +18,11 @@ import com.chs.contatos.conexao.ContatoDAO;
 import com.chs.contatos.model.Contato;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class CadastroActivity extends AppCompatActivity {
+public class CadastroActivity extends AppCompatActivity implements CadastroPresenter.CadastroView {
     private EditText nome, email, endereco, fone;
     private Contato contato = null;
     private Button btnSalvar;
+    private CadastroPresenter cadastroPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,7 @@ public class CadastroActivity extends AppCompatActivity {
             email.setText(contato.getEmail());
             endereco.setText(contato.getEndereco());
         }
+        cadastroPresenter = new CadastroPresenter(this);
     }
 
     private void bindViews(){
@@ -56,7 +58,7 @@ public class CadastroActivity extends AppCompatActivity {
                     if (!txtTelefone.isEmpty()) {
                         if (!txtEmail.isEmpty()) {
                             if (!txtEndereco.isEmpty()) {
-                                salvar(v);
+                                salvar();
                                 finish();
                             } else {
                                 Toast.makeText(CadastroActivity.this,
@@ -85,29 +87,32 @@ public class CadastroActivity extends AppCompatActivity {
         });
     }
 
-    public void salvar(View view){
+    public void salvar(){
         if(contato == null) {
             contato = new Contato();
-            //contato.setId(id);
             contato.setNome(nome.getText().toString());
             contato.setTelefone(fone.getText().toString());
             contato.setEmail(email.getText().toString());
             contato.setEndereco(endereco.getText().toString());
-            ContatoDAO.getInstance().inserir(contato);
-            Toast.makeText(this, "Contato " + contato.getNome() + " inserido com sucesso", Toast.LENGTH_LONG).show();
-            finish();
-            return;
+//            ContatoDAO.getInstance().inserir(contato);
+//            Toast.makeText(this, "Contato " + contato.getNome() + " inserido com sucesso", Toast.LENGTH_LONG).show();
         }else {
             if (contato.getId() !=null) {
                 contato.setNome(nome.getText().toString());
                 contato.setTelefone(fone.getText().toString());
                 contato.setEmail(email.getText().toString());
                 contato.setEndereco(endereco.getText().toString());
-                ContatoDAO.getInstance().atualizar(contato);
-                Toast.makeText(this, "Contato " + contato.getNome() + " atualizado com sucesso", Toast.LENGTH_LONG).show();
+//                ContatoDAO.getInstance().atualizar(contato);
+//                Toast.makeText(this, "Contato " + contato.getNome() + " atualizado com sucesso", Toast.LENGTH_LONG).show();
             }
 
         }
+        cadastroPresenter.salvarContatos(contato);
 
+    }
+
+    @Override
+    public void exibirMensgagem(String msg) {
+        Toast.makeText(CadastroActivity.this, msg, Toast.LENGTH_SHORT).show();
     }
 }
