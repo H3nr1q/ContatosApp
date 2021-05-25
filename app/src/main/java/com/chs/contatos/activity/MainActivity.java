@@ -2,6 +2,7 @@ package com.chs.contatos.activity;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.ListFragment;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,13 +25,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements MainPresenter.MainView{
+public class MainActivity extends AppCompatActivity implements MainPresenter.MainView, ContatoListFragment.AoClicarNoContato {
     private ListView listView;
     private List<Contato> contatos = new ArrayList<>();
     private List<Contato> contatosFiltrados = new ArrayList<>();
     private MainPresenter mainPresenter;
     private ContatoAdapter adaptador;
     FloatingActionButton fab;
+    private ListFragment listFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,9 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Mai
         registerForContextMenu(listView);
 
     }
+
+
+
 
 
     @Override
@@ -145,5 +150,12 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Mai
         this.contatos = contatos;
         contatosFiltrados = contatos;
         adaptador.setContatos(contatos);
+    }
+
+    @Override
+    public void clicouNoContato(Contato contato) {
+        Intent it = new Intent(this, DetalhesContatoActivity.class);
+        it.putExtra(DetalhesContatoActivity.EXTRA_CONTATO,contato);
+        startActivity(it);
     }
 }
