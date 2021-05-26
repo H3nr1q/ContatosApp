@@ -11,6 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Contatos">
         <activity android:name=".activity.CadastroActivity"></activity>
+        <activity android:name=".activity.DetalhesContatoActivity"></activity>
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

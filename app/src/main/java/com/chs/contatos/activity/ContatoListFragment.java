@@ -17,45 +17,45 @@ import com.chs.contatos.model.Contato;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContatoListFragment extends ListFragment implements MainPresenter.MainView {
-    List<Contato> mContato = new ArrayList<>();
-    ContatoAdapter contatoAdapter;
-    private MainPresenter mainPresenter;
-    private ListView listView;
-    private List<Contato> contatosFiltrados = new ArrayList<>();
-    private Activity MainActivity;
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mContato = (List<Contato>) new MainPresenter((MainPresenter.MainView) this);
-        refreshList(contatosFiltrados);
-
-
-
-    }
-
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-        Activity activity = getActivity();
-        if(activity instanceof AoClicarNoContato){
-            Contato contato = (Contato) l.getItemAtPosition(position);
-
-            AoClicarNoContato listener = (AoClicarNoContato)activity;
-            listener.clicouNoContato(contato);
-
-        }
-    }
-
-    @Override
-    public void refreshList(List<Contato> contatos) {
-        mContato = contatos;
-        contatosFiltrados = contatos;
-        contatoAdapter.setContatos(contatos);
-    }
-
-    public interface AoClicarNoContato{
-        void clicouNoContato(Contato contato);
-    }
+public class ContatoListFragment {
+//    List<Contato> mContato = new ArrayList<>();
+//    ContatoAdapter contatoAdapter;
+//    private MainPresenter mainPresenter;
+//    private ListView listView;
+//    private List<Contato> contatosFiltrados = new ArrayList<>();
+//    private Activity MainActivity;
+//
+//    @Override
+//    public void onActivityCreated(Bundle savedInstanceState) {
+//        super.onActivityCreated(savedInstanceState);
+//        mContato = (List<Contato>) new MainPresenter((MainPresenter.MainView) this);
+//        refreshList(contatosFiltrados);
+//
+//
+//
+//    }
+//
+//    @Override
+//    public void onListItemClick(ListView l, View v, int position, long id) {
+//        super.onListItemClick(l, v, position, id);
+//        Activity activity = getActivity();
+//        if(activity instanceof AoClicarNoContato){
+//            Contato contato = (Contato) l.getItemAtPosition(position);
+//
+//            AoClicarNoContato listener = (AoClicarNoContato)activity;
+//            listener.clicouNoContato(contato);
+//
+//        }
+//    }
+//
+//    @Override
+//    public void refreshList(List<Contato> contatos) {
+//        mContato = contatos;
+//        contatosFiltrados = contatos;
+//        contatoAdapter.setContatos(contatos);
+//    }
+//
+//    public interface AoClicarNoContato{
+//        void clicouNoContato(Contato contato);
+//    }
 }

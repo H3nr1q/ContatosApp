@@ -26,14 +26,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements MainPresenter.MainView, ContatoListFragment.AoClicarNoContato {
+public class MainActivity extends AppCompatActivity implements MainPresenter.MainView{
     private ListView listView;
     private List<Contato> contatos = new ArrayList<>();
     private List<Contato> contatosFiltrados = new ArrayList<>();
     private MainPresenter mainPresenter;
     private ContatoAdapter adaptador;
     FloatingActionButton fab;
-    private ListFragment listFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +49,15 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Mai
         listView = findViewById(R.id.lv_contatos);
         adaptador = new ContatoAdapter(this,contatosFiltrados);
         listView.setAdapter(adaptador);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Contato contato = (Contato) adapterView.getAdapter().getItem(position);
+                Intent intent = new Intent(MainActivity.this, DetalhesContatoActivity.class);
+                intent.putExtra(String.valueOf(contatos), contato);
+                startActivity(intent);
+            }
+        });
 
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -64,12 +72,21 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Mai
 
     }
 
-    @Override
-    public void clicouNoContato(Contato contato) {
-        Intent it = new Intent(this, DetalhesContatoActivity.class);
-        it.putExtra(DetalhesContatoActivity.EXTRA_CONTATO,contato);
-        startActivity(it);
-    }
+
+
+//    @Override
+//    public void onListItemClick(ListView l, View v, int position, long id) {
+//        super.onListItemClick(l, v, position, id);
+//        Activity activity = getActivity();
+//        if(activity instanceof ContatoAdapter.AoClicarNoContato){
+//            Contato contato = (Contato) l.getItemAtPosition(position);
+//
+//            AoClicarNoContato listener = (AoClicarNoContato)activity;
+//            listener.clicouNoContato(contato);
+//
+//        }
+//    }
+
 
 
 

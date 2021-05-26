@@ -23,6 +23,7 @@ public class MainPresenter {
 
     interface MainView{
         void refreshList(List<Contato> contatos);
+
     }
 
 }

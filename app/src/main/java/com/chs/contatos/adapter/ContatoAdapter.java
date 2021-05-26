@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.chs.contatos.R;
@@ -50,5 +51,10 @@ public class ContatoAdapter extends BaseAdapter {
 
     public void setContatos(List<Contato> contatos) {
         this.contatos = contatos;
+    }
+
+
+    public interface AoClicarNoContato{
+        void clicouNoContato(Contato contato);
     }
 }
