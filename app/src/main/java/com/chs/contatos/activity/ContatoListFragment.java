@@ -11,13 +11,14 @@ import androidx.fragment.app.ListFragment;
 
 import com.chs.contatos.R;
 import com.chs.contatos.adapter.ContatoAdapter;
+import com.chs.contatos.conexao.ContatoDAO;
 import com.chs.contatos.model.Contato;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ContatoListFragment extends ListFragment implements MainPresenter.MainView {
-    List<Contato> mContato;
+    List<Contato> mContato = new ArrayList<>();
     ContatoAdapter contatoAdapter;
     private MainPresenter mainPresenter;
     private ListView listView;
@@ -27,10 +28,9 @@ public class ContatoListFragment extends ListFragment implements MainPresenter.M
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mainPresenter = new MainPresenter((MainPresenter.MainView) this);
-        listView = listView.findViewById(R.id.lv_contatos);
-        contatoAdapter = new ContatoAdapter(MainActivity,contatosFiltrados);
-        listView.setAdapter(contatoAdapter);
+        mContato = (List<Contato>) new MainPresenter((MainPresenter.MainView) this);
+        refreshList(contatosFiltrados);
+
 
 
     }

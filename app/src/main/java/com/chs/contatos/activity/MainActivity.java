@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.ListFragment;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -63,7 +64,12 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Mai
 
     }
 
-
+    @Override
+    public void clicouNoContato(Contato contato) {
+        Intent it = new Intent(this, DetalhesContatoActivity.class);
+        it.putExtra(DetalhesContatoActivity.EXTRA_CONTATO,contato);
+        startActivity(it);
+    }
 
 
 
@@ -152,10 +158,5 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Mai
         adaptador.setContatos(contatos);
     }
 
-    @Override
-    public void clicouNoContato(Contato contato) {
-        Intent it = new Intent(this, DetalhesContatoActivity.class);
-        it.putExtra(DetalhesContatoActivity.EXTRA_CONTATO,contato);
-        startActivity(it);
-    }
+
 }

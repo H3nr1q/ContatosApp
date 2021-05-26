@@ -21,8 +21,8 @@ import com.chs.contatos.model.Contato;
  */
 public class DetalhesContatoFragment extends Fragment {
 
-    private static final String TAG_DETALHE = "tagDetalhe";
-    private static final String EXTRA_CONTATO = "contato";
+    public static final String TAG_DETALHE = "tagDetalhe";
+    public static final String EXTRA_CONTATO = "contato";
     private TextView txtNome, txtTelefone, txtEmail, txtEndereco;
     private ConstraintLayout layout;
     private Contato contato;
