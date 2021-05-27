@@ -42,7 +42,7 @@ public class ContatoListFragment extends Fragment implements MainPresenter.MainV
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         bindViews(view);
         mainPresenter = new MainPresenter(this);
@@ -50,7 +50,7 @@ public class ContatoListFragment extends Fragment implements MainPresenter.MainV
     }
 
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_principal, menu);
         SearchView sv = (SearchView) menu.findItem(R.id.app_bar_search).getActionView();
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -68,10 +68,47 @@ public class ContatoListFragment extends Fragment implements MainPresenter.MainV
     }
 
     @Override
-    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater i = requireActivity().getMenuInflater();
-        i.inflate(R.menu.menu_contexto_item, menu);
+//        MenuInflater i = requireActivity().getMenuInflater();
+//        i.inflate(R.menu.menu_contexto_item, menu);
+        menu.add(Menu.NONE, R.id.editar, Menu.NONE, "Editar");
+        menu.add(Menu.NONE, R.id.excluir, Menu.NONE, "Excluir");
+    }
+
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.editar:
+                AdapterView.AdapterContextMenuInfo menuEditar = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                final Contato contatoEditar = contatosFiltrados.get(menuEditar.position);
+                Intent i = new Intent(requireContext(), CadastroActivity.class);
+                i.putExtra("contato", contatoEditar);
+                startActivity(i);
+
+                return true;
+            case R.id.excluir:
+                AdapterView.AdapterContextMenuInfo menuExcluir = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                Contato contatoExcluir = contatosFiltrados.get(menuExcluir.position);
+
+                AlertDialog dialog = new AlertDialog.Builder(requireContext())
+                        .setTitle("Atenção")
+                        .setMessage("Deseja excluir esse contato?")
+                        .setNegativeButton("Não", null)
+                        .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                contatosFiltrados.remove(contatoExcluir);
+                                contatos.remove(contatoExcluir);
+                                ContatoDAO.getInstance().excluir(contatoExcluir);
+                                listView.invalidateViews();
+                            }
+                        }).create();
+                dialog.show();
+
+
+                return true;
+        }
+        return super.onContextItemSelected(item);
     }
 
     @Override
@@ -98,10 +135,6 @@ public class ContatoListFragment extends Fragment implements MainPresenter.MainV
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Contato contato = (Contato) adapterView.getAdapter().getItem(position);
-//                Intent intent = new Intent(requireContext(), DetalhesContatoActivity.class);
-//                intent.putExtra(String.valueOf(contatos), contato);
-//                startActivity(intent);
-
                 DetalhesContatoFragment fragment = DetalhesContatoFragment.newInstance(contato);
                 FragmentManager fm = requireActivity().getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
@@ -133,32 +166,36 @@ public class ContatoListFragment extends Fragment implements MainPresenter.MainV
         listView.invalidateViews();
     }
 
-    public void excluir(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        Contato contatoExcluir = contatosFiltrados.get(menuInfo.position);
+//    public void excluir(MenuItem item) {
+//        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+//        Contato contatoExcluir = contatosFiltrados.get(menuInfo.position);
+//
+//        AlertDialog dialog = new AlertDialog.Builder(requireContext())
+//                .setTitle("Atenção")
+//                .setMessage("Deseja excluir esse contato?")
+//                .setNegativeButton("Não", null)
+//                .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        contatosFiltrados.remove(contatoExcluir);
+//                        contatos.remove(contatoExcluir);
+//                        ContatoDAO.getInstance().excluir(contatoExcluir);
+//                        listView.invalidateViews();
+//                    }
+//                }).create();
+//        dialog.show();
+//    }
+//
+//    public void editar(MenuItem item) {
+//        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+//        final Contato contatoEditar = contatosFiltrados.get(menuInfo.position);
+//        Intent i = new Intent(requireContext(), CadastroActivity.class);
+//        i.putExtra("contato", contatoEditar);
+//        startActivity(i);
+//
+//    }
 
-        AlertDialog dialog = new AlertDialog.Builder(requireContext())
-                .setTitle("Atenção")
-                .setMessage("Deseja excluir esse contato?")
-                .setNegativeButton("Não", null)
-                .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        contatosFiltrados.remove(contatoExcluir);
-                        contatos.remove(contatoExcluir);
-                        ContatoDAO.getInstance().excluir(contatoExcluir);
-                        listView.invalidateViews();
-                    }
-                }).create();
-        dialog.show();
-    }
-
-    public void editar(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        final Contato contatoEditar = contatosFiltrados.get(menuInfo.position);
-        Intent i = new Intent(requireContext(), CadastroActivity.class);
-        i.putExtra("contato", contatoEditar);
-        startActivity(i);
-
+    public interface AoClicarContato{
+        void clicouNoHotel(Contato contato);
     }
 }

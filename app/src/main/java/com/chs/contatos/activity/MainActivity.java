@@ -28,7 +28,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity /*implements MainPresenter.MainView*/{
+public class MainActivity extends AppCompatActivity implements ContatoAdapter.AoClicarNoContato /*implements MainPresenter.MainView*/{
 //    private ListView listView;
 //    private List<Contato> contatos = new ArrayList<>();
 //    private List<Contato> contatosFiltrados = new ArrayList<>();
@@ -51,6 +51,28 @@ public class MainActivity extends AppCompatActivity /*implements MainPresenter.M
         ft.replace(R.id.container, fragment, ContatoListFragment.class.getSimpleName());
         ft.commit();
 
+    }
+
+    private boolean isTablet() {
+        return findViewById(R.id.detalheT)!=null;
+    }
+
+    @Override
+    public void clicouNoContato(Contato contato) {
+        if (isTablet()) {
+            ContatoListFragment fragment = new ContatoListFragment();
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.detalheT, fragment, ContatoListFragment.class.getSimpleName());
+            ft.commit();
+
+        } else {
+            ContatoListFragment fragment = new ContatoListFragment();
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.container, fragment, ContatoListFragment.class.getSimpleName());
+            ft.commit();
+        }
     }
 
     //    private void bindViews(){
