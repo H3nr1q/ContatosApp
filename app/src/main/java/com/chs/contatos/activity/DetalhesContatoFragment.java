@@ -2,6 +2,8 @@ package com.chs.contatos.activity;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
@@ -24,17 +26,14 @@ public class DetalhesContatoFragment extends Fragment {
     public static final String TAG_DETALHE = "tagDetalhe";
     public static final String EXTRA_CONTATO = "contato";
     private TextView txtNome, txtTelefone, txtEmail, txtEndereco;
-    private ConstraintLayout layout;
     private Contato contato;
-    Contato mContato;
 
 
     public DetalhesContatoFragment() {
-        // Required empty public constructor
+        super(R.layout.fragment_detalhes_contato);
     }
 
     public static DetalhesContatoFragment newInstance(Contato contato){
-
         Bundle args = new Bundle();
         args.putSerializable(EXTRA_CONTATO, contato);
         DetalhesContatoFragment fragment = new DetalhesContatoFragment();
@@ -45,33 +44,27 @@ public class DetalhesContatoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-             mContato = (Contato) getArguments().getSerializable(EXTRA_CONTATO);
+        contato = (Contato) getArguments().getSerializable(EXTRA_CONTATO);
              setHasOptionsMenu(true);
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View layout = inflater.inflate(R.layout.fragment_detalhes_contato,container,false);
-        bindViews();
-        if(mContato != null){
-            txtNome.setText(mContato.getNome());
-            txtTelefone.setText(mContato.getTelefone());
-            txtEmail.setText(mContato.getEmail());
-            txtEndereco.setText(mContato.getEndereco());
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        bindViews(view);
+    }
+
+    private void bindViews(View view){
+        txtNome = view.findViewById(R.id.txtFNome);
+        txtTelefone = view.findViewById(R.id.txtFTelefone);
+        txtEmail = view.findViewById(R.id.txtFEmail);
+        txtEndereco = view.findViewById(R.id.txtFEndereco);
+
+        if(contato != null){
+            txtNome.setText(contato.getNome());
+            txtTelefone.setText(contato.getTelefone());
+            txtEmail.setText(contato.getEmail());
+            txtEndereco.setText(contato.getEndereco());
         }
-        return layout;
     }
-
-    private void bindViews(){
-        txtNome = layout.findViewById(R.id.txtFNome);
-        txtTelefone = layout.findViewById(R.id.txtFTelefone);
-        txtEmail = layout.findViewById(R.id.txtFEmail);
-        txtEndereco = layout.findViewById(R.id.txtFEndereco);
-
-
-    }
-
-
 }
