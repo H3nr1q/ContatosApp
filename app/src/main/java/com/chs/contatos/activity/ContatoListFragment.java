@@ -174,36 +174,4 @@ public class ContatoListFragment extends Fragment implements MainPresenter.MainV
         listView.invalidateViews();
     }
 
-//    public void excluir(MenuItem item) {
-//        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-//        Contato contatoExcluir = contatosFiltrados.get(menuInfo.position);
-//
-//        AlertDialog dialog = new AlertDialog.Builder(requireContext())
-//                .setTitle("Atenção")
-//                .setMessage("Deseja excluir esse contato?")
-//                .setNegativeButton("Não", null)
-//                .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialogInterface, int i) {
-//                        contatosFiltrados.remove(contatoExcluir);
-//                        contatos.remove(contatoExcluir);
-//                        ContatoDAO.getInstance().excluir(contatoExcluir);
-//                        listView.invalidateViews();
-//                    }
-//                }).create();
-//        dialog.show();
-//    }
-//
-//    public void editar(MenuItem item) {
-//        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-//        final Contato contatoEditar = contatosFiltrados.get(menuInfo.position);
-//        Intent i = new Intent(requireContext(), CadastroActivity.class);
-//        i.putExtra("contato", contatoEditar);
-//        startActivity(i);
-//
-//    }
-
-    public interface AoClicarContato{
-        void clicouNoHotel(Contato contato);
-    }
 }
