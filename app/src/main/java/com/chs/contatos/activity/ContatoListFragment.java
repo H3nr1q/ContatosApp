@@ -21,6 +21,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.chs.contatos.R;
 import com.chs.contatos.adapter.ContatoAdapter;
+import com.chs.contatos.app.DeviceUtils;
 import com.chs.contatos.conexao.ContatoDAO;
 import com.chs.contatos.model.Contato;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -135,10 +136,17 @@ public class ContatoListFragment extends Fragment implements MainPresenter.MainV
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Contato contato = (Contato) adapterView.getAdapter().getItem(position);
+
+                /* Jeito rapido de fazer */
+//                int container = ((MainActivity) requireActivity()).isTablet() ? R.id.detalheT : R.id.container;
+
+                /* Jeito mais bonito de fazer */
+                int container = DeviceUtils.isTablet(requireContext()) ? R.id.detalheT : R.id.container;
+
                 DetalhesContatoFragment fragment = DetalhesContatoFragment.newInstance(contato);
                 FragmentManager fm = requireActivity().getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.container, fragment, DetalhesContatoFragment.class.getSimpleName());
+                ft.replace(container, fragment, DetalhesContatoFragment.class.getSimpleName());
                 ft.addToBackStack(null);
                 ft.commit();
             }
