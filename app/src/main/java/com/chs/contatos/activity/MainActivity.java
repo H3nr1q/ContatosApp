@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements ContatoAdapter.Ao
 
     }
 
-    private boolean isTablet() {
+     boolean isTablet() {
         return findViewById(R.id.detalheT)!=null;
     }
 
