@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 
@@ -16,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -36,6 +38,8 @@ public class ContatoListFragment extends Fragment implements MainPresenter.MainV
     private MainPresenter mainPresenter;
     private ContatoAdapter adaptador;
     FloatingActionButton fab;
+    private boolean mTwoPane;
+    private FrameLayout frameLayout;
 
     public ContatoListFragment() {
         super(R.layout.fragment_lista_contato);
@@ -45,6 +49,9 @@ public class ContatoListFragment extends Fragment implements MainPresenter.MainV
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        frameLayout = view.findViewById(R.id.detalhes_contato_fragment);
+        mTwoPane = DeviceUtils.isTablet(getContext()) && frameLayout != null;
         bindViews(view);
         mainPresenter = new MainPresenter(this);
         //mainPresenter.listarContatos();
@@ -141,7 +148,8 @@ public class ContatoListFragment extends Fragment implements MainPresenter.MainV
 //                int container = ((MainActivity) requireActivity()).isTablet() ? R.id.detalheT : R.id.container;
 
                 /* Jeito mais bonito de fazer */
-                int container = DeviceUtils.isTablet(requireContext()) ? R.id.detalheT : R.id.container;
+                int container = DeviceUtils.isTablet(getContext()) && mTwoPane ? R.id.detalheT : R.id.container;
+//                int container = DeviceUtils.isTablet(getContext()) ? R.id.detalheT : R.id.container;
 
                 DetalhesContatoFragment fragment = DetalhesContatoFragment.newInstance(contato);
                 FragmentManager fm = requireActivity().getSupportFragmentManager();
