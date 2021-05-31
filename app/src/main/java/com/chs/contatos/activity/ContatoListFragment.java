@@ -51,7 +51,8 @@ public class ContatoListFragment extends Fragment implements MainPresenter.MainV
         super.onViewCreated(view, savedInstanceState);
 
         frameLayout = view.findViewById(R.id.detalhes_contato_fragment);
-        mTwoPane = DeviceUtils.isTablet(getContext()) && frameLayout != null;
+//        mTwoPane = DeviceUtils.isTablet(getContext()) && frameLayout != null;
+        mTwoPane = DeviceUtils.hasTwoPane(requireContext());
         bindViews(view);
         mainPresenter = new MainPresenter(this);
         //mainPresenter.listarContatos();
@@ -148,14 +149,27 @@ public class ContatoListFragment extends Fragment implements MainPresenter.MainV
 //                int container = ((MainActivity) requireActivity()).isTablet() ? R.id.detalheT : R.id.container;
 
                 /* Jeito mais bonito de fazer */
-                int container = DeviceUtils.isTablet(getContext()) && mTwoPane ? R.id.detalheT : R.id.container;
+//                int container = DeviceUtils.isTablet(requireContext()) && mTwoPane ? R.id.detalheT : R.id.container;
+                int container = mTwoPane ? R.id.detalheT : R.id.container;
 //                int container = DeviceUtils.isTablet(getContext()) ? R.id.detalheT : R.id.container;
+
+//                DetalhesContatoFragment fragment = DetalhesContatoFragment.newInstance(contato);
+//                FragmentManager fm = requireActivity().getSupportFragmentManager();
+//                FragmentTransaction ft = fm.beginTransaction();
+//                ft.replace(container, fragment, DetalhesContatoFragment.class.getSimpleName());
+//                ft.addToBackStack(null);
+//                ft.commit();
 
                 DetalhesContatoFragment fragment = DetalhesContatoFragment.newInstance(contato);
                 FragmentManager fm = requireActivity().getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
                 ft.replace(container, fragment, DetalhesContatoFragment.class.getSimpleName());
-                ft.addToBackStack(null);
+
+                /* No caso de quando estiver exibindo duas telas não precisa de backstack */
+                if (!mTwoPane) {
+                    ft.addToBackStack(null);
+                }
+
                 ft.commit();
             }
         });
