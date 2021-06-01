@@ -49,13 +49,10 @@ public class ContatoListFragment extends Fragment implements MainPresenter.MainV
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         frameLayout = view.findViewById(R.id.detalhes_contato_fragment);
-//        mTwoPane = DeviceUtils.isTablet(getContext()) && frameLayout != null;
         mTwoPane = DeviceUtils.hasTwoPane(requireContext());
         bindViews(view);
         mainPresenter = new MainPresenter(this);
-        //mainPresenter.listarContatos();
     }
 
     @Override
@@ -79,8 +76,11 @@ public class ContatoListFragment extends Fragment implements MainPresenter.MainV
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
+        /* Em fragment não consegue inflar um menu de contexto */
 //        MenuInflater i = requireActivity().getMenuInflater();
 //        i.inflate(R.menu.menu_contexto_item, menu);
+
+        /* Criar um menu de contexto de forma manual */
         menu.add(Menu.NONE, R.id.editar, Menu.NONE, "Editar");
         menu.add(Menu.NONE, R.id.excluir, Menu.NONE, "Excluir");
     }
@@ -149,8 +149,7 @@ public class ContatoListFragment extends Fragment implements MainPresenter.MainV
 //                int container = ((MainActivity) requireActivity()).isTablet() ? R.id.detalheT : R.id.container;
 
                 /* Jeito mais bonito de fazer */
-//                int container = DeviceUtils.isTablet(requireContext()) && mTwoPane ? R.id.detalheT : R.id.container;
-                int container = mTwoPane ? R.id.detalheT : R.id.container;
+                  int container = mTwoPane ? R.id.detalheT : R.id.container;
 //                int container = DeviceUtils.isTablet(getContext()) ? R.id.detalheT : R.id.container;
 
 //                DetalhesContatoFragment fragment = DetalhesContatoFragment.newInstance(contato);

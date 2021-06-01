@@ -16,6 +16,6 @@ public class DeviceUtils {
     }
 
     public static boolean hasTwoPane(Context context) {
-        return (isTablet(context) || isLandscape(context));
+        return (isTablet(context) && isLandscape(context));
     }
 }

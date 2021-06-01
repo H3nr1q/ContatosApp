@@ -67,15 +67,15 @@ public class ContatoDAO extends DAO<Contato>{
         List<Contato> contatos = new ArrayList<>();
         String sql = "SELECT * FROM " + "contato" + ";";
         Cursor cursor = getReadableDB().rawQuery(sql, null);
-//        Cursor cursor = getReadableDB().query("contato",new String[] {"id, nome, telefone, email, endereco"},
-//                null, null, null, null, null);
+        //        Cursor cursor = getReadableDB().query("contato",new String[] {"id, nome, telefone, email, endereco"},
+        //                null, null, null, null, null);
         while (cursor.moveToNext()){
             Contato c = new Contato();
             c.setId(cursor.getInt(cursor.getColumnIndex("id")));
             c.setNome(cursor.getString(cursor.getColumnIndex("nome")));
             c.setTelefone(cursor.getString(cursor.getColumnIndex("telefone")));
-            c.setEmail(cursor.getString(cursor.getColumnIndex("endereco")));
-            c.setEndereco(cursor.getString(cursor.getColumnIndex("email")));
+            c.setEmail(cursor.getString(cursor.getColumnIndex("email")));
+            c.setEndereco(cursor.getString(cursor.getColumnIndex("endereco")));
 //            c.setId(cursor.getInt(0));
 //            c.setNome(cursor.getString(1));
 //            c.setTelefone(cursor.getString(2));

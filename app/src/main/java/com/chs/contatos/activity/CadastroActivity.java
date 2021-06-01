@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.chs.contatos.R;
+import com.chs.contatos.app.MaskEditUtil;
+import com.chs.contatos.app.ValidarEmailUtils;
 import com.chs.contatos.conexao.ContatoDAO;
 import com.chs.contatos.model.Contato;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -45,7 +47,9 @@ public class CadastroActivity extends AppCompatActivity implements CadastroPrese
         email = findViewById(R.id.editTextEmail);
         endereco = findViewById(R.id.editeTextEndereco);
         fone = findViewById(R.id.editTextFone);
+        fone.addTextChangedListener(MaskEditUtil.mask(fone, MaskEditUtil.FORMAT_FONE));
         btnSalvar = findViewById(R.id.btSalvar);
+
         btnSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,7 +89,9 @@ public class CadastroActivity extends AppCompatActivity implements CadastroPrese
 
             }
         });
+
     }
+
 
     public void salvar(){
         if(contato == null) {
