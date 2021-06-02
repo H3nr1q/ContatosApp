@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ActionMenuView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.chs.contatos.R;
@@ -25,6 +26,8 @@ public class CadastroActivity extends AppCompatActivity implements CadastroPrese
     private Contato contato = null;
     private Button btnSalvar;
     private CadastroPresenter cadastroPresenter;
+    private MenuItem chkSalvar;
+    FloatingActionButton fabSalvar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,17 +45,18 @@ public class CadastroActivity extends AppCompatActivity implements CadastroPrese
         cadastroPresenter = new CadastroPresenter(this);
     }
 
+
+
     private void bindViews(){
         nome = findViewById(R.id.editTextNome);
         email = findViewById(R.id.editTextEmail);
         endereco = findViewById(R.id.editeTextEndereco);
         fone = findViewById(R.id.editTextFone);
         fone.addTextChangedListener(MaskEditUtil.mask(fone, MaskEditUtil.FORMAT_FONE));
-        btnSalvar = findViewById(R.id.btSalvar);
-
-        btnSalvar.setOnClickListener(new View.OnClickListener() {
+        fabSalvar = findViewById(R.id.fabSalvar);
+        fabSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 String txtNome = nome.getText().toString();
                 String txtTelefone = fone.getText().toString();
                 String txtEmail = email.getText().toString();
@@ -62,8 +66,19 @@ public class CadastroActivity extends AppCompatActivity implements CadastroPrese
                     if (!txtTelefone.isEmpty()) {
                         if (!txtEmail.isEmpty()) {
                             if (!txtEndereco.isEmpty()) {
-                                salvar();
-                                finish();
+                                if (txtEmail!=null){
+                                    ValidarEmailUtils validarEmailUtils = new ValidarEmailUtils();
+                                    if(validarEmailUtils.isValidEmailAddressRegex(txtEmail)){
+                                        salvar();
+                                        finish();
+                                    }else{
+                                        Toast.makeText(CadastroActivity.this,
+                                                "Email inválido",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+
+                                }
+
                             } else {
                                 Toast.makeText(CadastroActivity.this,
                                         "Preencha o endereço.",
@@ -86,8 +101,8 @@ public class CadastroActivity extends AppCompatActivity implements CadastroPrese
                             "Preencha o nome.",
                             Toast.LENGTH_SHORT).show();
                 }
-
             }
+
         });
 
     }
